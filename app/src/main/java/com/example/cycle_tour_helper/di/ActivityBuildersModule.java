@@ -1,7 +1,6 @@
 package com.example.cycle_tour_helper.di;
 
-import android.app.Activity;
-
+import com.example.cycle_tour_helper.di.main.MainFragmentBuildersModule;
 import com.example.cycle_tour_helper.ui.LoginActivity;
 import com.example.cycle_tour_helper.ui.MainActivity;
 
@@ -19,8 +18,13 @@ public abstract class ActivityBuildersModule {
             //only the AuthActivity sub-component can use these modules
             //we can inject attributes from AuthModule all over AuthViewModelsModule and AuthActivity
 
-    public abstract LoginActivity contributeAuthActivity();
+    public abstract LoginActivity contributeLoginActivity();
 
-    @ContributesAndroidInjector
+
+    @ContributesAndroidInjector(
+            modules = {MainFragmentBuildersModule.class}
+
+    )
     abstract MainActivity contributeMainActivity();
+
 }
