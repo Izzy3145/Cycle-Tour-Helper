@@ -1,4 +1,4 @@
-package com.example.cycle_tour_helper.ui;
+package com.example.cycle_tour_helper.ui.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +12,12 @@ import com.example.cycle_tour_helper.R;
 
 import dagger.android.support.DaggerFragment;
 
-public class MapFragment extends DaggerFragment {
+public class ListFragment extends DaggerFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
 }

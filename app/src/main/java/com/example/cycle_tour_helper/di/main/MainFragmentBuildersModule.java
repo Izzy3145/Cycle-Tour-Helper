@@ -1,8 +1,8 @@
 package com.example.cycle_tour_helper.di.main;
 
-import com.example.cycle_tour_helper.ui.ListFragment;
-import com.example.cycle_tour_helper.ui.MapFragment;
-import com.example.cycle_tour_helper.ui.ProfileFragment;
+import com.example.cycle_tour_helper.ui.main.ListFragment;
+import com.example.cycle_tour_helper.ui.main.MapFragment;
+import com.example.cycle_tour_helper.ui.auth.ProfileFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

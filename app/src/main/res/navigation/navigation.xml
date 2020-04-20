@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@+id/mapFragment">
+    app:startDestination="@+id/listFragment">
 
     <fragment android:id="@+id/listFragment"
-        android:name="com.example.cycle_tour_helper.ui.ListFragment"
+        android:name="com.example.cycle_tour_helper.ui.main.ListFragment"
         android:label="@string/title_list"
         tools:layout="@layout/fragment_list"/>
 
     <fragment android:id="@+id/mapFragment"
-        android:name="com.example.cycle_tour_helper.ui.MapFragment"
+        android:name="com.example.cycle_tour_helper.ui.main.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map"/>
 
 
     <fragment android:id="@+id/profileFragment"
-        android:name="com.example.cycle_tour_helper.ui.ProfileFragment"
+        android:name="com.example.cycle_tour_helper.ui.auth.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile"/>
 

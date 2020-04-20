@@ -1,4 +1,4 @@
-package com.example.cycle_tour_helper.ui;
+package com.example.cycle_tour_helper.ui.auth;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
