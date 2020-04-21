@@ -7,12 +7,26 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cycle_tour_helper.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
 public class ListFragment extends DaggerFragment {
+
+    @Inject
+    RouteAdapter adapter;
+
+    RecyclerView recyclerView;
+
+    List<String> routeStrings = new ArrayList<>();
 
     @Nullable
     @Override
@@ -20,4 +34,19 @@ public class ListFragment extends DaggerFragment {
         return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.routes_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+
+        routeStrings.add("Oxford to Cambridge");
+        routeStrings.add("Coast and Castles");
+        routeStrings.add("Penine Way");
+
+        adapter.setRoutes(routeStrings);
+
+    }
 }

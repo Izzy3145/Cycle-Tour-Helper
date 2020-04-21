@@ -26,6 +26,7 @@ dependencies {
 
     def material_version = "1.0.0"
     implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.cardview:cardview:$material_version"
 
     //mapbox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'

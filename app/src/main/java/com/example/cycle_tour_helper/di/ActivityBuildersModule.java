@@ -1,6 +1,7 @@
 package com.example.cycle_tour_helper.di;
 
 import com.example.cycle_tour_helper.di.main.MainFragmentBuildersModule;
+import com.example.cycle_tour_helper.di.main.MainModule;
 import com.example.cycle_tour_helper.ui.auth.LoginActivity;
 import com.example.cycle_tour_helper.ui.main.MainActivity;
 
@@ -22,7 +23,8 @@ public abstract class ActivityBuildersModule {
 
 
     @ContributesAndroidInjector(
-            modules = {MainFragmentBuildersModule.class}
+            modules = { MainFragmentBuildersModule.class,
+                        MainModule.class}
 
     )
     abstract MainActivity contributeMainActivity();
