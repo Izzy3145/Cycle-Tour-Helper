@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,9 @@ import com.example.cycle_tour_helper.ViewModelProviderFactory;
 import com.example.cycle_tour_helper.models.Route;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -30,6 +32,11 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.RasterDemSource;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.Scanner;
@@ -50,8 +57,9 @@ public class MapFragment extends DaggerFragment {
     RouteViewModel routeViewModel;
 
     private MapView mapView;
-
     private MapboxMap mMapboxMap;
+
+    private LatLng startPoint;
     private static final String LAYER_ID = "hillshade-layer";
     private static final String SOURCE_ID = "hillshade-source";
     private static final String SOURCE_URL = "mapbox://mapbox.terrain-rgb";
@@ -66,8 +74,6 @@ public class MapFragment extends DaggerFragment {
         Mapbox.getInstance(getActivity(), getString(R.string.mapbox_access_token));
 
     }
-
-
 
     @Nullable
     @Override
@@ -90,7 +96,6 @@ public class MapFragment extends DaggerFragment {
                                 .withProperties(hillshadeHighlightColor(Color.parseColor(HILLSHADE_HIGHLIGHT_COLOR)),
                                         hillshadeShadowColor(Color.BLACK)
                                 );
-
                         // Add the hillshade layer to the map
                         style.addLayerBelow(hillshadeLayer, "aerialway");
 
@@ -99,7 +104,6 @@ public class MapFragment extends DaggerFragment {
             }
         });
         routeViewModel = ViewModelProviders.of(getActivity(), providerFactory).get(RouteViewModel.class);
-
         return view;
     }
 
@@ -174,6 +178,56 @@ public class MapFragment extends DaggerFragment {
         }
     }
 
+    private String loadJSONFromAsset(String fileName){
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+
+    private void getRouteStartPoint(String parsedJson){
+        if(parsedJson == null) {
+            //current location
+            startPoint = new LatLng(mMapboxMap.getLocationComponent().getLastKnownLocation().getLatitude(),
+                    mMapboxMap.getLocationComponent().getLastKnownLocation().getLongitude());;
+        }
+        try {
+            JSONObject obj = new JSONObject(parsedJson);
+            JSONArray coordinatesArray = obj.getJSONArray("features").getJSONObject(0)
+                    .getJSONObject("geometry").getJSONArray("coordinates");
+            JSONArray firstCoordinate = coordinatesArray.getJSONArray(0);
+            startPoint = new LatLng((Double) firstCoordinate.get(1), (Double) firstCoordinate.get(0));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCameraToStartPoint(){
+        //TODO: set bearing and zoom dependant on route direction and zoom
+        CameraPosition position = new CameraPosition.Builder()
+                .target(startPoint)
+                .zoom(8)
+                .bearing(0)
+                .tilt(30)
+                .build();
+
+        mMapboxMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(position), 7000);
+    }
+
+
+
     private static class LoadGeoJson extends AsyncTask<Route, Void, FeatureCollection> {
 
         private WeakReference<MapFragment> weakReference;
@@ -198,6 +252,7 @@ public class MapFragment extends DaggerFragment {
                 MapFragment mapFragment = weakReference.get();
                 if (mapFragment != null) {
                     InputStream inputStream = mapFragment.getActivity().getAssets().open(sb.toString());
+                    mapFragment.getRouteStartPoint(mapFragment.loadJSONFromAsset(sb.toString()));
                     return FeatureCollection.fromJson(convertStreamToString(inputStream));
                 }
             } catch (Exception exception) {
@@ -212,6 +267,7 @@ public class MapFragment extends DaggerFragment {
             MapFragment mapFragment = weakReference.get();
             if (mapFragment != null && featureCollection != null) {
                 mapFragment.drawLines(featureCollection);
+                mapFragment.setCameraToStartPoint();
             }
         }
     }
