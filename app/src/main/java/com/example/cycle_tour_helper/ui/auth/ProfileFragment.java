@@ -14,6 +14,8 @@ import dagger.android.support.DaggerFragment;
 
 public class ProfileFragment extends DaggerFragment {
 
+    public ProfileFragment(){}
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
