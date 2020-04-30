@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -17,6 +23,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,6 +43,8 @@ dependencies {
 
     //mapbox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
+    //mapbox navigation
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'
 
     // Dagger
     def dagger_version = "2.22"
@@ -66,15 +76,15 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rxcalladapter_version"
     // Retrofit call adapter
 
+    def room_version = "2.1.0-beta01"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
     // Reactive Streams (convert Observable to LiveData)
     def reactivestreams_version = "1.1.1"
     implementation "android.arch.lifecycle:reactivestreams:$reactivestreams_version"
-
-    // architecture comp. navigation
-    def nav_version = "2.2.0-alpha01"
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
-    implementation "androidx.navigation:navigation-runtime:$nav_version"
 
     //unit testing
     testImplementation 'junit:junit:4.12'

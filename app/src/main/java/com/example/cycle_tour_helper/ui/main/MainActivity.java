@@ -1,9 +1,8 @@
 package com.example.cycle_tour_helper.ui.main;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +14,7 @@ import com.example.cycle_tour_helper.R;
 import com.example.cycle_tour_helper.ViewModelProviderFactory;
 import com.example.cycle_tour_helper.models.Route;
 import com.example.cycle_tour_helper.ui.auth.ProfileFragment;
+import com.example.cycle_tour_helper.viewmodels.RouteViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;
@@ -35,6 +35,11 @@ public class MainActivity extends BaseActivity implements ListFragment.OnRouteSe
         setContentView(R.layout.activity_main);
         setUpBottomNavView();
         routeViewModel = ViewModelProviders.of(this, providerFactory).get(RouteViewModel.class);
+        PackageManager pm = getPackageManager();
+        if (!pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)) {
+            // This device does not have a compass, turn off the compass feature
+        }
+
     }
 
     public void setUpBottomNavView() {
@@ -51,6 +56,11 @@ public class MainActivity extends BaseActivity implements ListFragment.OnRouteSe
                     case R.id.mapFragment:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_content, new MapFragment())
+                                .commit();
+                        break;
+                    case R.id.weatherFragment:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_content, new WeatherFragment())
                                 .commit();
                         break;
                     case R.id.profileFragment:

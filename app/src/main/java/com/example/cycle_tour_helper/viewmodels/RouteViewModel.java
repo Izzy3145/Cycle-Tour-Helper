@@ -1,4 +1,4 @@
-package com.example.cycle_tour_helper.ui.main;
+package com.example.cycle_tour_helper.viewmodels;
 
 import android.util.Log;
 
