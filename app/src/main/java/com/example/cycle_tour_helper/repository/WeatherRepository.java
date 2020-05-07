@@ -12,8 +12,6 @@ public class WeatherRepository {
 
     private static final String TAG = "WeatherRepository";
 
-    private static WeatherRepository instance;
-
     @NonNull
     private final WeatherDao weatherDao;
 

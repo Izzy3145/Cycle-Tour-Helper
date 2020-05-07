@@ -1,7 +1,5 @@
 package com.example.cycle_tour_helper.viewmodels;
 
-import android.content.pm.PackageManager;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 

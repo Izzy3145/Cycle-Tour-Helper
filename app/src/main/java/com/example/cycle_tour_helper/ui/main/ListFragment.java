@@ -53,9 +53,9 @@ public class ListFragment extends DaggerFragment implements RoutesListAdapter.On
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        routes.add(new Route("Oxford to Cambridge", "oxfordcambridge"));
-        routes.add(new Route("Coast and Castles", "coastandcastles"));
-        routes.add(new Route("Penine Way", "penineway"));
+        routes.add(new Route("Oxford to Cambridge", "oxfordcambridge", null));
+        routes.add(new Route("Coast and Castles", "coastandcastles", null));
+        routes.add(new Route("Penine Way", "penineway", null));
         adapter.setRouteData(routes);
 
         checkLocationPermissions();

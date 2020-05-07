@@ -1,6 +1,9 @@
 package com.example.cycle_tour_helper.di;
 
+import androidx.room.PrimaryKey;
+
 import com.example.cycle_tour_helper.utils.Constants;
+import com.google.firebase.storage.FirebaseStorage;
 
 import javax.inject.Singleton;
 

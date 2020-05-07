@@ -302,6 +302,20 @@ public class MapFragment extends DaggerFragment {
         return json;
     }
 
+    public String readJSONFromInputStream(InputStream is){
+        String json = null;
+        try {
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
     private void getRouteStartPoint(String parsedJson){
         if(parsedJson == null) {
@@ -406,18 +420,20 @@ public class MapFragment extends DaggerFragment {
         }
 
         @Override
-        protected FeatureCollection doInBackground(Route... routes) {
+        protected FeatureCollection doInBackground(Route... route) {
             try {
-                StringBuilder sb = new StringBuilder()
-                        .append(routes[0].getRouteFileName())
-                        .append(".geojson");
+               /* StringBuilder sb = new StringBuilder()
+                        .append(inputStreams[0].getRouteFileName())
+                        .append(".geojson");*/
+
+                String inputString = route[0].getInputString();
 
                 MapFragment mapFragment = weakReference.get();
                 if (mapFragment != null) {
-                    InputStream inputStream = mapFragment.getActivity().getAssets().open(sb.toString());
-                    mapFragment.getRouteStartPoint(mapFragment.loadJSONFromAsset(sb.toString()));
-                    mapFragment.getRouteCoordinates(mapFragment.loadJSONFromAsset(sb.toString()));
-                    return FeatureCollection.fromJson(convertStreamToString(inputStream));
+//                    InputStream inputStream = mapFragment.getActivity().getAssets().open(sb.toString());
+                 //   mapFragment.getRouteStartPoint(mapFragment.readJSONFromInputStream(is));
+                  //  mapFragment.getRouteCoordinates(mapFragment.readJSONFromInputStream(is));
+                    return FeatureCollection.fromJson(inputString);
                 }
             } catch (Exception exception) {
                 Log.e(TAG, "Exception Loading GeoJSON: %s" + exception.toString());
@@ -431,8 +447,8 @@ public class MapFragment extends DaggerFragment {
             MapFragment mapFragment = weakReference.get();
             if (mapFragment != null && featureCollection != null) {
                 mapFragment.drawLines(featureCollection);
-                mapFragment.setCameraToStartPoint();
-                mapFragment.startNavigationBtn.setEnabled(true);
+             //   mapFragment.setCameraToStartPoint();
+              //  mapFragment.startNavigationBtn.setEnabled(true);
             }
         }
     }

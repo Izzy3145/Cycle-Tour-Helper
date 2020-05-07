@@ -6,9 +6,10 @@ import androidx.room.Room;
 
 import com.example.cycle_tour_helper.db.WeatherDao;
 import com.example.cycle_tour_helper.db.WeatherDatabase;
+import com.example.cycle_tour_helper.repository.RouteRepository;
 import com.example.cycle_tour_helper.repository.WeatherRepository;
+import com.example.cycle_tour_helper.utils.FirebaseCallback;
 
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,4 +38,8 @@ public class MainModule {
         return new WeatherRepository(weatherDao);
     }
 
+    @Provides
+    static RouteRepository provideRouteRepository(){
+        return new RouteRepository();
+    }
 }
