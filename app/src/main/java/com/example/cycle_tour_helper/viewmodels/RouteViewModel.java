@@ -41,13 +41,14 @@ public class RouteViewModel extends ViewModel implements FirebaseCallback {
     }
 
     public void setSelectedRoute(Route route){
-        routeRepository.getFileFromFirebase();
+       // routeRepository.getFileFromFirebase();
+        selectedRoute.setValue(route);
+
     }
 
     @Override
     public void onSuccessFileFound(Route route) {
         Log.i(TAG, "onSuccessFileFound: " + route.getInputString());
-        selectedRoute.setValue(route);
     }
 
     @Override

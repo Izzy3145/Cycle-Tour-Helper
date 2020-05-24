@@ -70,7 +70,6 @@ public class RouteRepository {
                    Log.i(TAG,"Bytes downloaded: " + bytesDownloaded);
                }
                inputStream.close();
-               BufferedInputStream
                // Close the stream at the end of the Task
            }
        })
